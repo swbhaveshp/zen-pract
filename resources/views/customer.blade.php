@@ -183,9 +183,7 @@
                 <tr>
                     <td><select class="form-control product-table" id="invoice[`+ i +`][product_id]" name="invoice[`+ i +`][product_id]"">
                             <option value=""> Please select </option>
-                            @foreach ($products as $product)
-                                <option value="{{ $product->product_id }}"> {{ $product->product_name }} </option>
-                            @endforeach
+                            `+getProductOption(product_id)+`
                         </select>
                     </td>
                     <td>
@@ -201,6 +199,18 @@
             
             i += 1;
         });
+        
+        function getProductOption (selectedProduct) {
+            var options = "";
+             @foreach ($products as $product)
+              if(selectedProduct == {{ $product->product_id }}) {
+                options = options + '<option value="{{ $product->product_id }}" selected> {{ $product->product_name }} </option>'
+              }else{
+                options = options + '<option value="{{ $product->product_id }}"> {{ $product->product_name }} </option>'
+              }
+             @endforeach
+             return options;
+        }
 
         $(document).on('click', '.remove-invoice', function() {
             $(this).parent('td').parent('tr').remove();
